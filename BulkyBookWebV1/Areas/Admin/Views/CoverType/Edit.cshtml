@@ -1,0 +1,17 @@
+﻿@model CoverType
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit CoverType</h2>
+        </div>
+        <input type="hidden" asp-for="Id" />
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        
+        <button type="submit"  class="btn btn-primary" style="width:150px">Edit</button>
+        <a  asp-action="Index" asp-controller="CoverType" class="btn btn-secondary"  asp-area="Admin">Back to List</a>
+    </div>
+</form>

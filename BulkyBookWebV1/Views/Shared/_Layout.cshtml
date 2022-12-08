@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.Http
+@using BulkyBook.Utility
+@using Microsoft.AspNetCore.Identity
+@inject IHttpContextAccessor Cintext
+
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BulkyBookWebV1</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BulkyBookWebV1.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Bulky</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-action="Index" asp-controller="Home" asp-area="Customer">
+                                Home
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-area="Admin">Category</a>
+                                    <a class="dropdown-item" asp-controller="CoverType" asp-action="Index" asp-area="Admin">Cover Type</a>
+                                    <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-area="Admin">Product</a>
+                                    <a class="dropdown-item" asp-controller="Company" asp-action="Index" asp-area="Admin">Company</a>
+                                     <a class="dropdown-item" asp-controller="Account" asp-action="Register" asp-area="Identity">Create User</a>
+                                    @* <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>*@
+                                </div>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Order" asp-area="Admin">
+                                Manage Order
+                            </a>
+                        </li>
+                       
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Cart" asp-area="Customer">
+                                   @await Component.InvokeAsync("ShoppingCart")
+                                </a>
+                            </li>
+                        
+                    </ul>
+                    }
+                    <partial name="_LoginPartial" />
+                    @*  <form class="d-flex">
+                    <input class="form-control me-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>*@
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <partial name="_Notification" />
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - BulkyBookWebV1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>*@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @*  <script src="https://cdn.tiny.cloud/1/bw4s1jggdvtc6s3dsjd0bazqb7o4isamaatesmv3rrq38hw6/tinymce/6/plugins.min.js" referrerpolicy="origin"></script>*@
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
