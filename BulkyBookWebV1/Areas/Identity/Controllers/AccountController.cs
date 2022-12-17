@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace BulkyBookWebV1.Areas.Identity.Controllers
@@ -146,9 +148,12 @@ namespace BulkyBookWebV1.Areas.Identity.Controllers
         }
         public async Task<IActionResult> LogOut()
         {
+            var claim = (ClaimsIdentity)User.Identity;
+            var useId = claim.FindFirst(ClaimTypes.NameIdentifier).Value;
             await HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
-            return View("Login");
+            HttpContext.Session.Remove("useId");
+            return RedirectToAction("Login");
         }
     }
 }

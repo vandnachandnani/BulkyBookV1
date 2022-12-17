@@ -1,0 +1,5 @@
+<script>
+    var data=fetch("localhost:7093/api/Category")
+    .then(data=>data.json())
+    .then(json=>console.warn(json))
+</script>

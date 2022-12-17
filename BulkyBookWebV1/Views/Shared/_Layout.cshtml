@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject IHttpContextAccessor Cintext
 
-@inject SignInManager<ApplicationUser> signInManager
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +27,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (SignInManager.IsSignedIn(User))
                     {
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
@@ -66,7 +66,28 @@
                         
                     </ul>
                     }
-                    <partial name="_LoginPartial" />
+                   <ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a id="manage" class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-action="LogOut" asp-controller="Account">
+            <button id="logout" type="submit" class="nav-link btn btn-link ">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" id="register" asp-area="Identity" asp-action="Register" asp-controller="Account" >Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " id="login" asp-area="Identity" asp-action="Login" asp-controller="Account">Login</a>
+    </li>
+}
+</ul>
                     @*  <form class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
